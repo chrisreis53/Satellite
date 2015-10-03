@@ -10,5 +10,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Christopher/Development/worldwind-2.0.0/worldwindx.jar" sourcepath="C:/Users/Christopher/Development/worldwind-2.0.0/src"/>
+	<classpathentry kind="lib" path="C:/Users/Christopher/Development/jdom-2.0.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
