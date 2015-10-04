@@ -139,7 +139,7 @@ public class SatelliteXMLDB{
 	               StartElement startElement = event.asStartElement();
 	               String qName = startElement.getName().getLocalPart();
 
-	               if (qName.equalsIgnoreCase("student")) {				        	
+	               if (qName.equalsIgnoreCase("SatelliteDB")) {				        	
 	                  Iterator<Attribute> attributes = startElement.getAttributes();
 	                  String rollNo = attributes.next().getValue();				           
 	                  if(rollNo.equalsIgnoreCase("393")){     	 
