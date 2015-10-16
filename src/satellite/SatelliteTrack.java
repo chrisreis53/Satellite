@@ -2,6 +2,7 @@ package satellite;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import predict4java.*;
 
@@ -9,8 +10,10 @@ public class SatelliteTrack {
 	
 	private String name;
 	private Satellite satellite;
+	private PassPredictor passPredictor;
 	private SatPassTime satPassTime;
-	private Boolean isVisible;
+	private Boolean isVisibleGUI;
+	private double freq;
 	private ArrayList<satPosition> dayOrbit;
 	private ArrayList<satPosition> singleOrbit;
 	private ArrayList<satPosition> doubleOrbit;
@@ -21,7 +24,10 @@ public class SatelliteTrack {
 		this.name = name;
 		this.satellite = SatelliteFactory.createSatellite(tle);
 		
+		//Calculate Vectors (Must be done before any other calculations as they are based off this!)
 		this.satellite.calculateSatelliteVectors(new Date());
+		
+		//Calculate Orbits
 		this.dayOrbit = getDayOrbit(this.satellite);
 		this.singleOrbit = getSingleOrbit(this.satellite);
 		this.doubleOrbit = getDoubleOrbit(this.satellite);
@@ -37,8 +43,8 @@ public class SatelliteTrack {
 		return "TBD";
 	}
 	
-	public Boolean isVisible(){
-		return isVisible;
+	public Boolean isVisibleGUI(){
+		return isVisibleGUI;
 	}
 	
 	public ArrayList<satPosition> getDayOrbit(){
@@ -57,32 +63,35 @@ public class SatelliteTrack {
 		return tripleOrbit;
 	}
 	
-	public Date getNextPassStart(GroundStationPosition gpos){
-		SatPassTime satPassTime = null;
-		Date pass = new Date(0);
-		if(!this.satellite.willBeSeen(gpos)){
-			return pass;
+	public List<SatPassTime> get24hrPasses(GroundStationPosition gpos){
+
+		updateSatPassPredictor(gpos);
+		
+		List<SatPassTime> passes = null;
+		try {
+			passes = passPredictor.getPasses(new Date(), 24, false);
+		} catch (SatNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		passes.toString();
+		
+		return passes;
+	}
+	
+	private void updateSatPassPredictor(GroundStationPosition gspos){
+		//TODO move sat pass data from getNextPass
+		if(!this.satellite.willBeSeen(gspos)){
+			System.err.println("Satellite will not be seen - updateSatPassTime()");
 		}else{
-			PassPredictor nextPass = null;
 			try {
-				nextPass = new PassPredictor(this.satellite.getTLE(),gpos);
+				passPredictor = new PassPredictor(this.satellite.getTLE(),gspos);
 			} catch (IllegalArgumentException | SatNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			try {
-				satPassTime = nextPass.nextSatPass(new Date());
-				return satPassTime.getStartTime();
-			} catch (SatNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
-		return pass;
-	}
-	
-	private void updateSatPassTime(){
-		//TODO move sat pass data from getNextPass
 	}
 	
 	private ArrayList<satPosition> getDayOrbit(Satellite trackedSat){
