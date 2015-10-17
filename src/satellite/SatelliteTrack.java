@@ -13,7 +13,7 @@ public class SatelliteTrack {
 	private PassPredictor passPredictor;
 	private SatPassTime satPassTime;
 	private Boolean isVisibleGUI;
-	private double freq;
+	private long freq;
 	private ArrayList<satPosition> dayOrbit;
 	private ArrayList<satPosition> singleOrbit;
 	private ArrayList<satPosition> doubleOrbit;
@@ -41,6 +41,27 @@ public class SatelliteTrack {
 	
 	public String getConstillation(){
 		return "TBD";
+	}
+	
+	public long getDopplarFrequency(){
+		
+		try {
+			return passPredictor.getDownlinkFreq(freq, new Date());
+		} catch (SatNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return -1;
+		
+	}
+	
+	public void setFreq(long freq){
+		this.freq = freq;
+	}
+	
+	public long getFreq(){
+		return freq;
 	}
 	
 	public Boolean isVisibleGUI(){
