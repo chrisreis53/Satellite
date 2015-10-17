@@ -75,7 +75,19 @@ public class SatelliteTrack {
 			e.printStackTrace();
 		} 
 		
-		passes.toString();
+		return passes;
+	}
+	
+	public List<SatPassTime> getPassesForTime(GroundStationPosition gpos,int hours){
+		updateSatPassPredictor(gpos);
+		
+		List<SatPassTime> passes = null;
+		try {
+			passes = passPredictor.getPasses(new Date(), hours, false);
+		} catch (SatNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		
 		return passes;
 	}
