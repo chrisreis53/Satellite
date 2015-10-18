@@ -1,4 +1,5 @@
 package satellite;
+
 import java.util.Date;
 
 public class satPosition{
