@@ -118,6 +118,13 @@ public class SatelliteTrack {
 	public ArrayList<satPosition> getTripleOrbit() {
 		return tripleOrbit;
 	}
+	
+	public void updateOrbits(){
+		dayOrbit = getDayOrbit(this.satellite);
+		singleOrbit = getSingleOrbit(this.satellite);
+		doubleOrbit = getDoubleOrbit(this.satellite);
+		tripleOrbit = getTripleOrbit(this.satellite);
+	}
 
 	public List<SatPassTime> get24hrPasses(GroundStationPosition gpos) {
 

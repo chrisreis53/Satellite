@@ -204,7 +204,7 @@ public class SatelliteDB {
 				satellite.appendChild(tle1);
 				
 				Element tle2 = doc.createElement("TLE2");
-				tle2.appendChild(doc.createTextNode(satelliteDB.get(i).getTLE1()));
+				tle2.appendChild(doc.createTextNode(satelliteDB.get(i).getTLE2()));
 				satellite.appendChild(tle2);
 				
 				//Uplink Frequency used
@@ -269,12 +269,32 @@ public class SatelliteDB {
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
 					Element eElement = (Element) nNode;
-
-					System.out.println("Satellite name : " + eElement.getElementsByTagName("name").item(0).getTextContent());
-					System.out.println("TLE1 : " + eElement.getElementsByTagName("TLE1").item(0).getTextContent());
-					System.out.println("TLE2 : " + eElement.getElementsByTagName("TLE2").item(0).getTextContent());
-					System.out.println("Uplink Frequency : " + eElement.getElementsByTagName("UplinkFreq").item(0).getTextContent());
-					System.out.println("Downlink Frequency : " + eElement.getElementsByTagName("DownlinkFreq").item(0).getTextContent());
+					
+					//Read in elements
+					String name = eElement.getElementsByTagName("name").item(0).getTextContent();
+					String TLE1 = eElement.getElementsByTagName("TLE1").item(0).getTextContent();
+					String TLE2 = eElement.getElementsByTagName("TLE2").item(0).getTextContent();
+					String uFreq = eElement.getElementsByTagName("UplinkFreq").item(0).getTextContent();
+					String dFreq = eElement.getElementsByTagName("DownlinkFreq").item(0).getTextContent();
+					
+					System.out.println(name);
+					System.out.println(TLE1);
+					System.out.println(TLE2);
+					
+					//Build Satellite
+					String[] tle = {name,TLE1,TLE2};
+					
+					SatelliteTrack sat = new SatelliteTrack(tle);
+					sat.setDownlinkFreq(Long.parseLong(dFreq));
+					sat.setUplinkFreq(Long.parseLong(uFreq));
+					satelliteDB.add(sat);
+					
+					//Debug print out
+					System.out.println("Satellite name : " + sat.getTLE().getName());
+					System.out.println("TLE1 : " + sat.getTLE1());
+					System.out.println("TLE2 : " + sat.getTLE2());
+					System.out.println("Uplink Frequency : " + sat.getUplinkFreq());
+					System.out.println("Downlink Frequency : " + sat.getDownlinkFreq());
 
 				}
 			}

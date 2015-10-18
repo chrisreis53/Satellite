@@ -8,11 +8,17 @@ public class tracker {
 		
 		satellites.readXML();
 		
-		//satellites.getSatellites_GPS();
-		//satellites.getSatellites_NOAA();
-		//satellites.getSatellites_Stations();
+		if(satellites.satExist("PROGRESS-M 29M")){
+			System.out.println("Satellite Exitis!");
+		}
 		
-		//satellites.writeToXML();
+//		satellites.getSatellites_GPS();
+//		satellites.getSatellites_NOAA();
+//		satellites.getSatellites_Stations();
+//		
+//		satellites.writeToXML();
+		
+
 	}
 
 }
