@@ -14,8 +14,11 @@ public class SatelliteTrack {
 	private Satellite satellite;
 	private PassPredictor passPredictor;
 	// private SatPassTime satPassTime;
-	private Boolean isVisibleGUI;
-	private long freq;
+	private Boolean isVisibleGUI = true;
+	private long uFreq = 0;
+	private long dFreq = 0;
+	private String image = "/satellite.png";	//not implemented
+	private String trackColor;					//not implemented
 	private ArrayList<satPosition> dayOrbit;
 	private ArrayList<satPosition> singleOrbit;
 	private ArrayList<satPosition> doubleOrbit;
@@ -39,10 +42,10 @@ public class SatelliteTrack {
 		this.satellite.calculateSatelliteVectors(new Date());
 
 		// Calculate Orbits
-		this.dayOrbit = getDayOrbit(this.satellite);
-		this.singleOrbit = getSingleOrbit(this.satellite);
-		this.doubleOrbit = getDoubleOrbit(this.satellite);
-		this.tripleOrbit = getTripleOrbit(this.satellite);
+		//this.dayOrbit = getDayOrbit(this.satellite);
+		//this.singleOrbit = getSingleOrbit(this.satellite);
+		//this.doubleOrbit = getDoubleOrbit(this.satellite);
+		//this.tripleOrbit = getTripleOrbit(this.satellite);
 
 	}
 
@@ -59,7 +62,7 @@ public class SatelliteTrack {
 		return "TBD";
 	}
 
-	public long getDopplarFrequency() {
+	public long getDopplarFrequency(long freq) {
 
 		try {
 			return passPredictor.getDownlinkFreq(freq, new Date());
@@ -72,14 +75,22 @@ public class SatelliteTrack {
 
 	}
 
-	public void setFreq(long freq) {
-		this.freq = freq;
+	public void setUplinkFreq(long freq) {
+		this.uFreq = freq;
+	}
+	
+	public void setDownlinkFreq(long freq) {
+		this.dFreq = freq;
 	}
 
-	public long getFreq() {
-		return freq;
+	public long getUplinkFreq() {
+		return uFreq;
 	}
 
+	public long getDownlinkFreq() {
+		return dFreq;
+	}
+	
 	public String getTLE1(){
 		return tle1;
 	}

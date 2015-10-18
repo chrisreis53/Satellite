@@ -26,6 +26,9 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import predict4java.*;
 
@@ -66,9 +69,8 @@ public class SatelliteDB {
 				String line1 = in.readLine();
 				String line2 = in.readLine();
 				String[] args1 = {inputLine,line1,line2};
-				System.out.println(args1);
+				System.out.println(args1[0]);
 				satelliteDB.add(new SatelliteTrack(args1));
-				System.out.println(inputLine);
 				writer.println(inputLine);
 			}
 			in.close();
@@ -205,6 +207,21 @@ public class SatelliteDB {
 				tle2.appendChild(doc.createTextNode(satelliteDB.get(i).getTLE1()));
 				satellite.appendChild(tle2);
 				
+				//Uplink Frequency used
+				Element uFreq = doc.createElement("UplinkFreq");
+				uFreq.appendChild(doc.createTextNode(Long.toString(satelliteDB.get(i).getUplinkFreq())));
+				satellite.appendChild(uFreq);
+				
+				//Downlink Frequency
+				Element dFreq = doc.createElement("DownlinkFreq");
+				dFreq.appendChild(doc.createTextNode(Long.toString(satelliteDB.get(i).getDownlinkFreq())));
+				satellite.appendChild(dFreq);
+				
+				//GUI Visible?
+				Element guiVisible = doc.createElement("GUIVisible");
+				guiVisible.appendChild(doc.createTextNode(satelliteDB.get(i).isVisibleGUI().toString()));
+				satellite.appendChild(guiVisible);
+				
 				rootElement.appendChild(satellite);
 			}
 			
@@ -226,5 +243,48 @@ public class SatelliteDB {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void readXML(){
+		
+		try {
+			File fXmlFile = new File("satelliteDB.xml");
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder;
+			dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(fXmlFile);
+			
+			doc.getDocumentElement().normalize();
+
+			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+			NodeList nList = doc.getElementsByTagName("Satellite");
+			System.out.println("There are " + nList.getLength() + " satellites in the Database");
+			System.out.println("----------------------------------------");
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+
+				Node nNode = nList.item(temp);
+						
+				System.out.println("\nCurrent Element :" + nNode.getNodeName());
+						
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+					Element eElement = (Element) nNode;
+
+					System.out.println("Satellite name : " + eElement.getElementsByTagName("name").item(0).getTextContent());
+					System.out.println("TLE1 : " + eElement.getElementsByTagName("TLE1").item(0).getTextContent());
+					System.out.println("TLE2 : " + eElement.getElementsByTagName("TLE2").item(0).getTextContent());
+					System.out.println("Uplink Frequency : " + eElement.getElementsByTagName("UplinkFreq").item(0).getTextContent());
+					System.out.println("Downlink Frequency : " + eElement.getElementsByTagName("DownlinkFreq").item(0).getTextContent());
+
+				}
+			}
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
 	}
 }
