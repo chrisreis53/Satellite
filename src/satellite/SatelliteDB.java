@@ -35,7 +35,7 @@ import predict4java.*;
 
 public class SatelliteDB {
  	
-	ArrayList<SatelliteTrack> satelliteDB = new ArrayList<SatelliteTrack>();
+	ArrayList<SatelliteTrack> database = new ArrayList<SatelliteTrack>();
 	boolean databaseSet = false;
 	String name = "SatelliteDB";
 	GroundStationPosition groundstation;
@@ -65,13 +65,22 @@ public class SatelliteDB {
 			String inputLine;
 			System.out.println("Data from: " + url);
 			while ((inputLine = in.readLine()) != null){
+				
 				String line1 = in.readLine();
 				String line2 = in.readLine();
 				String[] args1 = {inputLine,line1,line2};
-				System.out.println(args1[0]);
-				SatelliteTrack sat = new SatelliteTrack(args1);
-				sat.setConstillation(file);
-				satelliteDB.add(sat);
+				
+				if(satExist(args1[0])){
+					System.out.println(inputLine + " updated!");
+					int num = getSatIndex(inputLine);
+					database.get(num).setTLE(args1);
+				}else{
+					System.out.println(args1[0] + " created!");
+					SatelliteTrack sat = new SatelliteTrack(args1);
+					sat.setConstillation(file);
+					database.add(sat);
+				}
+				
 			}
 			in.close();
 			return true;
@@ -112,7 +121,7 @@ public class SatelliteDB {
 //				}
 				String[] TLEs = {line,br.readLine(),br.readLine()};
 				TLE data = new TLE(TLEs);
-				//satelliteDB.add(SatelliteFactory.createSatellite(data));
+				//database.add(SatelliteFactory.createSatellite(data));
 //	        System.out.println(line);
 //	        System.out.println(br.readLine());
 //	        System.out.println(br.readLine());
@@ -148,8 +157,9 @@ public class SatelliteDB {
 	
 	public int getSatIndex(String sat){
 		
-		for(int i=0;i<satelliteDB.size();i++){
-			if(sat.equals(satelliteDB.get(i).getTLE().getName())){
+		for(int i=0;i<database.size();i++){
+			sat = sat.trim();
+			if(sat.equals(database.get(i).getTLE().getName())){
 				return i;
 			}
 		}
@@ -159,20 +169,16 @@ public class SatelliteDB {
 	}
 	
 	public int getSize(){
-		return satelliteDB.size();
+		return database.size();
 	}
 
-//	public Satellite getSat(int selectedSatellite) {
-//		return satelliteDB.get(selectedSatellite);
-//	}
 	
 	public boolean satExist(String string){
-		int selectedSatellite = this.getSatIndex(string);
+		int selectedSatellite = getSatIndex(string);
 		if(selectedSatellite>=0){
 			//System.out.println(this.getSat(selectedSatellite).getTLE().getName() + " Exists!");
 			return true;
 		}else{
-			//System.out.println("Satellite does not exisit");
 			return false;
 		}
 	}
@@ -190,50 +196,50 @@ public class SatelliteDB {
 			date.appendChild(doc.createTextNode(new Date().toString()));
 			rootElement.appendChild(date);
 			
-			for(int i = 0;i<satelliteDB.size();i++){
+			for(int i = 0;i<database.size();i++){
 				Element satellite = doc.createElement("Satellite");
-				//satellite.appendChild(doc.createTextNode(satelliteDB.get(i).getTLE().getName()));
+				//satellite.appendChild(doc.createTextNode(database.get(i).getTLE().getName()));
 				
 				Element name = doc.createElement("name");
-				name.appendChild(doc.createTextNode(satelliteDB.get(i).getTLE().getName()));
+				name.appendChild(doc.createTextNode(database.get(i).getTLE().getName()));
 				satellite.appendChild(name);
 				
 				Element tle1 = doc.createElement("TLE1");
-				tle1.appendChild(doc.createTextNode(satelliteDB.get(i).getTLE1()));
+				tle1.appendChild(doc.createTextNode(database.get(i).getTLE1()));
 				satellite.appendChild(tle1);
 				
 				Element tle2 = doc.createElement("TLE2");
-				tle2.appendChild(doc.createTextNode(satelliteDB.get(i).getTLE2()));
+				tle2.appendChild(doc.createTextNode(database.get(i).getTLE2()));
 				satellite.appendChild(tle2);
 				
 				//Uplink Frequency used
 				Element uFreq = doc.createElement("UplinkFreq");
-				uFreq.appendChild(doc.createTextNode(Long.toString(satelliteDB.get(i).getUplinkFreq())));
+				uFreq.appendChild(doc.createTextNode(Long.toString(database.get(i).getUplinkFreq())));
 				satellite.appendChild(uFreq);
 				
 				//Downlink Frequency
 				Element dFreq = doc.createElement("DownlinkFreq");
-				dFreq.appendChild(doc.createTextNode(Long.toString(satelliteDB.get(i).getDownlinkFreq())));
+				dFreq.appendChild(doc.createTextNode(Long.toString(database.get(i).getDownlinkFreq())));
 				satellite.appendChild(dFreq);
 				
 				//GUI Visible?
 				Element guiVisible = doc.createElement("GUIVisible");
-				guiVisible.appendChild(doc.createTextNode(satelliteDB.get(i).isVisibleGUI().toString()));
+				guiVisible.appendChild(doc.createTextNode(database.get(i).isVisibleGUI().toString()));
 				satellite.appendChild(guiVisible);
 				
 				//Image
 				Element satImage = doc.createElement("satImage");
-				satImage.appendChild(doc.createTextNode(satelliteDB.get(i).getImage()));
+				satImage.appendChild(doc.createTextNode(database.get(i).getImage()));
 				satellite.appendChild(satImage);
 				
 				//TrackColor
 				Element trackColor = doc.createElement("trackColor");
-				trackColor.appendChild(doc.createTextNode(satelliteDB.get(i).getTrackColor()));
+				trackColor.appendChild(doc.createTextNode(database.get(i).getTrackColor()));
 				satellite.appendChild(trackColor);
 				
 				//Constellation
 				Element constellation = doc.createElement("constellation");
-				constellation.appendChild(doc.createTextNode(satelliteDB.get(i).getConstillation()));
+				constellation.appendChild(doc.createTextNode(database.get(i).getConstillation()));
 				satellite.appendChild(constellation);
 				
 				rootElement.appendChild(satellite);
@@ -292,7 +298,7 @@ public class SatelliteDB {
 					String dFreq = eElement.getElementsByTagName("DownlinkFreq").item(0).getTextContent();
 					String trackColor = eElement.getElementsByTagName("trackColor").item(0).getTextContent();
 					String constellation = eElement.getElementsByTagName("constellation").item(0).getTextContent();
-					String image = eElement.getElementsByTagName("image").item(0).getTextContent();
+					String image = eElement.getElementsByTagName("satImage").item(0).getTextContent();
 					String guiVisible = eElement.getElementsByTagName("GUIVisible").item(0).getTextContent();
 					
 					System.out.println(name);
@@ -309,7 +315,7 @@ public class SatelliteDB {
 					sat.setConstillation(constellation);
 					sat.setImage(image);
 					sat.setVisibleGUI(Boolean.valueOf(guiVisible));
-					satelliteDB.add(sat);
+					database.add(sat);
 					
 					//Debug print out
 					System.out.println("Satellite name : " + sat.getTLE().getName());
