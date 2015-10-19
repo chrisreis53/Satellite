@@ -6,17 +6,17 @@ public class tracker {
 
 		SatelliteDB satellites = new SatelliteDB("SatelliteDB");
 		
-		satellites.readXML();
+		//satellites.readXML();
 		
 		if(satellites.satExist("PROGRESS-M 29M")){
 			System.out.println("Satellite Exitis!");
 		}
 		
-//		satellites.getSatellites_GPS();
-//		satellites.getSatellites_NOAA();
-//		satellites.getSatellites_Stations();
-//		
-//		satellites.writeToXML();
+		satellites.getSatellites_GPS();
+		satellites.getSatellites_NOAA();
+		satellites.getSatellites_Stations();
+		
+		satellites.writeToXML();
 		
 
 	}

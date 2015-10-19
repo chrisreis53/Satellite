@@ -57,10 +57,9 @@ public class SatelliteDB {
 			e1.printStackTrace();
 			return false;
 		}
-		
-		PrintWriter writer = null;
+
 		try {
-				writer = new PrintWriter(file, "UTF-8");
+
 			URLConnection yc = url.openConnection();
 			BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
 			String inputLine;
@@ -70,11 +69,11 @@ public class SatelliteDB {
 				String line2 = in.readLine();
 				String[] args1 = {inputLine,line1,line2};
 				System.out.println(args1[0]);
-				satelliteDB.add(new SatelliteTrack(args1));
-				writer.println(inputLine);
+				SatelliteTrack sat = new SatelliteTrack(args1);
+				sat.setConstillation(file);
+				satelliteDB.add(sat);
 			}
 			in.close();
-			writer.close();
 			return true;
 			
 		} catch (UnsupportedEncodingException e) {
@@ -130,19 +129,19 @@ public class SatelliteDB {
 		}
 	
 	public void getSatellites_GPS(){
-		downloadTLE("https://celestrak.com/NORAD/elements/gps-ops.txt","gps.txt");
+		downloadTLE("https://celestrak.com/NORAD/elements/gps-ops.txt","gps");
 		//TLEReader("gps.txt");
 		databaseSet = true;
 	}
 	
 	public void getSatellites_Stations(){
-		downloadTLE("https://celestrak.com/NORAD/elements/stations.txt","stations.txt");
+		downloadTLE("https://celestrak.com/NORAD/elements/stations.txt","stations");
 		//TLEReader("stations.txt");
 		databaseSet = true;
 	}
 	
 	public void getSatellites_NOAA(){
-		downloadTLE("https://celestrak.com/NORAD/elements/noaa.txt","noaa.txt");
+		downloadTLE("https://celestrak.com/NORAD/elements/noaa.txt","noaa");
 		//TLEReader("noaa.txt");
 		databaseSet = true;
 	}
@@ -222,6 +221,21 @@ public class SatelliteDB {
 				guiVisible.appendChild(doc.createTextNode(satelliteDB.get(i).isVisibleGUI().toString()));
 				satellite.appendChild(guiVisible);
 				
+				//Image
+				Element satImage = doc.createElement("satImage");
+				satImage.appendChild(doc.createTextNode(satelliteDB.get(i).getImage()));
+				satellite.appendChild(satImage);
+				
+				//TrackColor
+				Element trackColor = doc.createElement("trackColor");
+				trackColor.appendChild(doc.createTextNode(satelliteDB.get(i).getTrackColor()));
+				satellite.appendChild(trackColor);
+				
+				//Constellation
+				Element constellation = doc.createElement("constellation");
+				constellation.appendChild(doc.createTextNode(satelliteDB.get(i).getConstillation()));
+				satellite.appendChild(constellation);
+				
 				rootElement.appendChild(satellite);
 			}
 			
@@ -276,6 +290,10 @@ public class SatelliteDB {
 					String TLE2 = eElement.getElementsByTagName("TLE2").item(0).getTextContent();
 					String uFreq = eElement.getElementsByTagName("UplinkFreq").item(0).getTextContent();
 					String dFreq = eElement.getElementsByTagName("DownlinkFreq").item(0).getTextContent();
+					String trackColor = eElement.getElementsByTagName("trackColor").item(0).getTextContent();
+					String constellation = eElement.getElementsByTagName("constellation").item(0).getTextContent();
+					String image = eElement.getElementsByTagName("image").item(0).getTextContent();
+					String guiVisible = eElement.getElementsByTagName("GUIVisible").item(0).getTextContent();
 					
 					System.out.println(name);
 					System.out.println(TLE1);
@@ -287,6 +305,10 @@ public class SatelliteDB {
 					SatelliteTrack sat = new SatelliteTrack(tle);
 					sat.setDownlinkFreq(Long.parseLong(dFreq));
 					sat.setUplinkFreq(Long.parseLong(uFreq));
+					sat.setTrackColor(trackColor);
+					sat.setConstillation(constellation);
+					sat.setImage(image);
+					sat.setVisibleGUI(Boolean.valueOf(guiVisible));
 					satelliteDB.add(sat);
 					
 					//Debug print out
@@ -295,6 +317,10 @@ public class SatelliteDB {
 					System.out.println("TLE2 : " + sat.getTLE2());
 					System.out.println("Uplink Frequency : " + sat.getUplinkFreq());
 					System.out.println("Downlink Frequency : " + sat.getDownlinkFreq());
+					System.out.println("Track Color : " + sat.getDownlinkFreq());
+					System.out.println("Constellation : " + sat.getDownlinkFreq());
+					System.out.println("Image : " + sat.getDownlinkFreq());
+					System.out.println("Visible in GUI : " + sat.getDownlinkFreq());
 
 				}
 			}

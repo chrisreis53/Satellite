@@ -18,7 +18,8 @@ public class SatelliteTrack {
 	private long uFreq = 0;
 	private long dFreq = 0;
 	private String image = "/satellite.png";	//not implemented
-	private String trackColor;					//not implemented
+	private String trackColor = "white";					//not implemented
+	private String constellation = "";
 	private ArrayList<satPosition> dayOrbit;
 	private ArrayList<satPosition> singleOrbit;
 	private ArrayList<satPosition> doubleOrbit;
@@ -59,9 +60,29 @@ public class SatelliteTrack {
 	}
 
 	public String getConstillation() {
-		return "TBD";
+		return this.constellation;
+	}
+	
+	public void setConstillation(String constellation){
+		this.constellation = constellation;
 	}
 
+	public void setTrackColor(String color){
+		this.trackColor = color;
+	}
+	
+	public String getTrackColor(){
+		return trackColor;
+	}
+	
+	public void setImage(String image){
+		this.image = image;
+	}
+	
+	public String getImage(){
+		return image;
+	}
+	
 	public long getDopplarFrequency(long freq) {
 
 		try {
@@ -101,6 +122,10 @@ public class SatelliteTrack {
 	
 	public Boolean isVisibleGUI() {
 		return isVisibleGUI;
+	}
+
+	public void setVisibleGUI(Boolean b){
+		this.isVisibleGUI = b;
 	}
 
 	public ArrayList<satPosition> getDayOrbit() {
