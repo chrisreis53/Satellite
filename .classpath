@@ -11,5 +11,11 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Christopher/Development/worldwind-2.0.0/worldwindx.jar" sourcepath="C:/Users/Christopher/Development/worldwind-2.0.0/src"/>
 	<classpathentry kind="lib" path="C:/Users/Christopher/Development/jdom-2.0.6.jar"/>
+	<classpathentry kind="lib" path="org.pushingpixels.trident_1.2.0.v20100204-1500.jar" sourcepath="org.pushingpixels.trident.source_1.2.0.v20100204-1500.jar"/>
+	<classpathentry kind="lib" path="org.eclipse.e4.xwt_0.9.1.SNAPSHOT.jar" sourcepath="org.eclipse.e4.xwt.source_0.9.1.SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="org.eclipse.e4.xwt.forms_0.9.1.SNAPSHOT.jar" sourcepath="org.eclipse.e4.xwt.forms.source_0.9.1.SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Christopher/Desktop/eclipse/plugins/org.eclipse.core.databinding_1.5.0.v20150422-0725.jar" sourcepath="C:/Users/Christopher/Desktop/eclipse/plugins/org.eclipse.core.databinding_1.5.0.v20150422-0725.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Christopher/Desktop/eclipse/plugins/org.eclipse.core.databinding.observable_1.5.0.v20150422-0725.jar" sourcepath="C:/Users/Christopher/Desktop/eclipse/plugins/org.eclipse.core.databinding.observable_1.5.0.v20150422-0725.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Christopher/Desktop/eclipse/plugins/org.eclipse.jface.databinding_1.7.0.v20150406-2148.jar" sourcepath="C:/Users/Christopher/Desktop/eclipse/plugins/org.eclipse.jface.databinding_1.7.0.v20150406-2148.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
