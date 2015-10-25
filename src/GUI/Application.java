@@ -28,6 +28,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JDesktopPane;
+import javax.swing.JToolBar;
+import javax.swing.JProgressBar;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 public class Application {
 
@@ -66,6 +71,16 @@ public class Application {
 		frmSatelliteTracker.setTitle("Satellite Tracker");
 		frmSatelliteTracker.setBounds(100, 100, 1362, 867);
 		frmSatelliteTracker.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		JDesktopPane desktopPane = new JDesktopPane();
+		frmSatelliteTracker.getContentPane().add(desktopPane, BorderLayout.CENTER);
+		
+		satelliteTree satTree = new satelliteTree();
+		satTree.setClosable(true);
+		satTree.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		satTree.setResizable(true);
+		satTree.setBounds(21, 70, 867, 495);
+		desktopPane.add(satTree);
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmSatelliteTracker.setJMenuBar(menuBar);
@@ -142,6 +157,13 @@ public class Application {
 		mnWindows.add(mntmSatelliteInfo);
 		
 		JMenuItem mntmSatelliteTree = new JMenuItem("Satellite Tree");
+		mntmSatelliteTree.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				satTree.setVisible(true);
+				satTree.updateTree(satellites);
+			}
+		});
 		mnWindows.add(mntmSatelliteTree);
 		
 		JMenuItem mntmPassScheduler = new JMenuItem("Pass Scheduler");
@@ -161,6 +183,10 @@ public class Application {
 		
 		JCheckBoxMenuItem chckbxmntmTime = new JCheckBoxMenuItem("Time");
 		mnShow.add(chckbxmntmTime);
+		
+
+		
+
 	}
 	
 

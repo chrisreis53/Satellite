@@ -12,6 +12,7 @@ public class tracker {
 		satellites.getSatellites_NOAA();
 		satellites.getSatellites_Stations();
 		
+		
 		satellites.writeToXML();
 		
 

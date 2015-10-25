@@ -172,6 +172,10 @@ public class SatelliteDB {
 		return database.size();
 	}
 
+	public SatelliteTrack sat(int i){
+		SatelliteTrack satTrack = database.get(i);
+		return satTrack;
+	}
 	
 	public boolean satExist(String string){
 		int selectedSatellite = getSatIndex(string);
