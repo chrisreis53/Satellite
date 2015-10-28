@@ -79,13 +79,13 @@ public class Application {
 		satTree.setClosable(true);
 		satTree.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		satTree.setResizable(true);
-		satTree.setBounds(21, 70, 867, 495);
+		satTree.setBounds(10, 52, 867, 495);
 		desktopPane.add(satTree);
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmSatelliteTracker.setJMenuBar(menuBar);
 		
-		JMenu mnFile = new JMenu("FIle");
+		JMenu mnFile = new JMenu("File");
 		mnFile.setIcon(null);
 		menuBar.add(mnFile);
 		

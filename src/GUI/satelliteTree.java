@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.EventQueue;
+import java.util.Enumeration;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JFrame;
@@ -15,11 +16,19 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import satellite.*;
+import java.awt.Component;
+import javax.swing.Box;
+import javax.swing.SwingConstants;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 
 public class satelliteTree extends JInternalFrame {
 	private JTextField textField;
 
-	JTree tree = new JTree();
+	DefaultMutableTreeNode root = new DefaultMutableTreeNode("Database");
+	JTree tree = new JTree(root);
+	
+		
 	/**
 	 * Create the frame.
 	 */
@@ -27,20 +36,24 @@ public class satelliteTree extends JInternalFrame {
 		setMaximizable(true);
 		setClosable(true);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 872, 640);
+		setBounds(100, 100, 862, 519);
+		
+		root.add(new DefaultMutableTreeNode("Other"));
 		
 		JDesktopPane desktopPane = new JDesktopPane();
 		getContentPane().add(desktopPane, BorderLayout.CENTER);
 		
+		JScrollPane treescroll = new JScrollPane(tree);
+		treescroll.setBounds(0, 0, 254, 481);
+		desktopPane.add(treescroll);
 		
-		tree.setBounds(0, 0, 254, 588);
-		desktopPane.add(tree);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(252, 0, 604, 588);
+		panel.setBounds(252, 0, 596, 481);
 		desktopPane.add(panel);
 		
 		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		panel.add(lblNewLabel);
 		
 		textField = new JTextField();
@@ -50,11 +63,30 @@ public class satelliteTree extends JInternalFrame {
 	}
 	
 	public void updateTree(SatelliteDB satellites){
+		
+		//Iterate through sat database
 		for(int i = 0;i<satellites.getSize();i++){
-			DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-			DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-			model.insertNodeInto(new DefaultMutableTreeNode(satellites.sat(i).getTLE().getName()), root, root.getChildCount());
+			boolean b_set = false;
+			//pull constellation from satellite
+			String constillation = satellites.sat(i).getConstillation();
+			//pull nodes from Jtree
+			int count = root.getChildCount();
+			System.out.println(count);
+			for(int j = 0; j<count;j++){
+				System.out.println(root.getChildCount());
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(j);
+				if(node.toString().equalsIgnoreCase(constillation.trim())){
+					node.add(new DefaultMutableTreeNode(satellites.sat(i).getTLE().getName()));
+					System.out.println("added to existing");
+					b_set = true;
+				} 
+			}
+			if(!b_set) { 
+				DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(constillation);
+				newNode.add(new DefaultMutableTreeNode(satellites.sat(i).getTLE().getName()));
+				root.add(newNode);
+			}
+			
 		}
 	}
-
 }

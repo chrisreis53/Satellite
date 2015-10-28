@@ -20,6 +20,7 @@ public class SatelliteTrack {
 	private String image = "/satellite.png";	//not implemented
 	private String trackColor = "white";					//not implemented
 	private String constellation = "";
+	private String info = "";
 	private ArrayList<satPosition> dayOrbit;
 	private ArrayList<satPosition> singleOrbit;
 	private ArrayList<satPosition> doubleOrbit;
@@ -118,6 +119,14 @@ public class SatelliteTrack {
 
 	public String getTLE2(){
 		return tle2;
+	}
+	
+	public String getInfo(){
+		return info;
+	}
+	
+	public void setInfo(String info){
+		this.info = info;
 	}
 	
 	public Boolean isVisibleGUI() {

@@ -155,6 +155,18 @@ public class SatelliteDB {
 		databaseSet = true;
 	}
 	
+	public void getSatellites_Iridium(){
+		downloadTLE("https://celestrak.com/NORAD/elements/iridium.txt","Iridium");
+		//TLEReader("noaa.txt");
+		databaseSet = true;
+	}
+	
+	public void getSatellites_GEO(){
+		downloadTLE("https://celestrak.com/NORAD/elements/geo.txt","Geostationary");
+		//TLEReader("noaa.txt");
+		databaseSet = true;
+	}
+	
 	public int getSatIndex(String sat){
 		
 		for(int i=0;i<database.size();i++){
@@ -246,6 +258,11 @@ public class SatelliteDB {
 				constellation.appendChild(doc.createTextNode(database.get(i).getConstillation()));
 				satellite.appendChild(constellation);
 				
+				//Constellation
+				Element info = doc.createElement("info");
+				constellation.appendChild(doc.createTextNode(database.get(i).getInfo()));
+				satellite.appendChild(info);
+				
 				rootElement.appendChild(satellite);
 			}
 			
@@ -304,6 +321,7 @@ public class SatelliteDB {
 					String constellation = eElement.getElementsByTagName("constellation").item(0).getTextContent();
 					String image = eElement.getElementsByTagName("satImage").item(0).getTextContent();
 					String guiVisible = eElement.getElementsByTagName("GUIVisible").item(0).getTextContent();
+					String info = eElement.getElementsByTagName("info").item(0).getTextContent();
 					
 					System.out.println(name);
 					System.out.println(TLE1);
@@ -319,6 +337,7 @@ public class SatelliteDB {
 					sat.setConstillation(constellation);
 					sat.setImage(image);
 					sat.setVisibleGUI(Boolean.valueOf(guiVisible));
+					sat.setInfo(info);
 					database.add(sat);
 					
 					//Debug print out
@@ -331,6 +350,7 @@ public class SatelliteDB {
 					System.out.println("Constellation : " + sat.getDownlinkFreq());
 					System.out.println("Image : " + sat.getDownlinkFreq());
 					System.out.println("Visible in GUI : " + sat.getDownlinkFreq());
+					System.out.println("Info : "+sat.getInfo());
 
 				}
 			}

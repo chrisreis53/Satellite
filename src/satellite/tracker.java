@@ -11,9 +11,12 @@ public class tracker {
 		satellites.getSatellites_GPS();
 		satellites.getSatellites_NOAA();
 		satellites.getSatellites_Stations();
-		
+		satellites.getSatellites_GEO();
+		satellites.getSatellites_Iridium();
 		
 		satellites.writeToXML();
+		
+		System.out.println("There are " + satellites.getSize() + " in the database!");
 		
 
 	}
