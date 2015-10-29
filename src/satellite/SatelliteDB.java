@@ -35,10 +35,10 @@ import predict4java.*;
 
 public class SatelliteDB {
  	
-	ArrayList<SatelliteTrack> database = new ArrayList<SatelliteTrack>();
-	boolean databaseSet = false;
-	String name = "SatelliteDB";
-	GroundStationPosition groundstation;
+	static ArrayList<SatelliteTrack> database = new ArrayList<SatelliteTrack>();
+	static boolean databaseSet = false;
+	static String name = "SatelliteDB";
+	static GroundStationPosition groundstation;
 	final static GroundStationPosition ALBUQUERQUE = new GroundStationPosition(35.0873191, -106.6376107, 5500, "Albuquerque");
 	final static GroundStationPosition STORMLAKE = new GroundStationPosition(42.6436, 95.2019, 1440,"Storm Lake"); 
 	
@@ -46,7 +46,7 @@ public class SatelliteDB {
 		this.name = name;
 	}
 	
-	public boolean downloadTLE(String in_url, String file){
+	public static boolean downloadTLE(String in_url, String file){
 		
 		URL url;
 		
@@ -98,7 +98,7 @@ public class SatelliteDB {
 		}
 	}
 	
-	public void TLEReader(String file){
+	public static void TLEReader(String file){
 		
 		//TODO
 		FileReader in = null;
@@ -133,41 +133,41 @@ public class SatelliteDB {
 	
 	}
 	
-	public void setGroundstation(GroundStationPosition gPos){
+	public static void setGroundstation(GroundStationPosition gPos){
 		groundstation = gPos;
 		}
 	
-	public void getSatellites_GPS(){
-		downloadTLE("https://celestrak.com/NORAD/elements/gps-ops.txt","gps");
+	public static void getSatellites_GPS(){
+		downloadTLE("https://celestrak.com/NORAD/elements/gps-ops.txt","GPS");
 		//TLEReader("gps.txt");
 		databaseSet = true;
 	}
 	
-	public void getSatellites_Stations(){
-		downloadTLE("https://celestrak.com/NORAD/elements/stations.txt","stations");
+	public static void getSatellites_Stations(){
+		downloadTLE("https://celestrak.com/NORAD/elements/stations.txt","Stations");
 		//TLEReader("stations.txt");
 		databaseSet = true;
 	}
 	
-	public void getSatellites_NOAA(){
-		downloadTLE("https://celestrak.com/NORAD/elements/noaa.txt","noaa");
+	public static void getSatellites_NOAA(){
+		downloadTLE("https://celestrak.com/NORAD/elements/noaa.txt","NOAA");
 		//TLEReader("noaa.txt");
 		databaseSet = true;
 	}
 	
-	public void getSatellites_Iridium(){
+	public static void getSatellites_Iridium(){
 		downloadTLE("https://celestrak.com/NORAD/elements/iridium.txt","Iridium");
 		//TLEReader("noaa.txt");
 		databaseSet = true;
 	}
 	
-	public void getSatellites_GEO(){
+	public static void getSatellites_GEO(){
 		downloadTLE("https://celestrak.com/NORAD/elements/geo.txt","Geostationary");
 		//TLEReader("noaa.txt");
 		databaseSet = true;
 	}
 	
-	public int getSatIndex(String sat){
+	public static int getSatIndex(String sat){
 		
 		for(int i=0;i<database.size();i++){
 			sat = sat.trim();
@@ -180,16 +180,16 @@ public class SatelliteDB {
 		
 	}
 	
-	public int getSize(){
+	public static int getSize(){
 		return database.size();
 	}
 
-	public SatelliteTrack sat(int i){
+	public static SatelliteTrack sat(int i){
 		SatelliteTrack satTrack = database.get(i);
 		return satTrack;
 	}
 	
-	public boolean satExist(String string){
+	public static boolean satExist(String string){
 		int selectedSatellite = getSatIndex(string);
 		if(selectedSatellite>=0){
 			//System.out.println(this.getSat(selectedSatellite).getTLE().getName() + " Exists!");
