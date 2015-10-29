@@ -38,18 +38,27 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Color;
 import javax.swing.JEditorPane;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
+import javax.swing.JMenuItem;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class satelliteTree extends JInternalFrame {
-	private JTextField textField;
+	private JTextField satNameField;
 
 	DefaultMutableTreeNode root = new DefaultMutableTreeNode("Database");
 	JTree tree = new JTree(root);
-	private JTextField textField_1;
+	private JTextField constillationField;
+	private JTextField uplinkFreqField;
+	private JTextField downlinkFreqField;
 	
 		
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked", "serial" })
 	public satelliteTree() {
 		setMaximizable(true);
 		setClosable(true);
@@ -67,24 +76,24 @@ public class satelliteTree extends JInternalFrame {
 		
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(252, 0, 596, 481);
+		panel.setBounds(252, 0, 596, 467);
 		desktopPane.add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Satellite name");
-		lblNewLabel.setBounds(47, 38, 81, 14);
+		lblNewLabel.setBounds(21, 21, 150, 31);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		panel.add(lblNewLabel);
 		
-		textField = new JTextField();
-		textField.setBounds(138, 35, 60, 20);
-		textField.setDropMode(DropMode.INSERT);
-		panel.add(textField);
-		textField.setColumns(10);
+		satNameField = new JTextField();
+		satNameField.setBounds(167, 21, 114, 32);
+		satNameField.setDropMode(DropMode.INSERT);
+		panel.add(satNameField);
+		satNameField.setColumns(10);
 		
 		BufferedImage img = null;
 		try {
-		    img = ImageIO.read(new File("D:\\MyDocuments\\GitHub\\Satellite\\satellite.png"));
+		    img = ImageIO.read(new File("C:\\Users\\Christopher\\Documents\\GitHub\\Satellite\\satellite.png"));
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
@@ -93,27 +102,73 @@ public class satelliteTree extends JInternalFrame {
 		ImageIcon image = new ImageIcon(dimg);
 		JLabel lblSatImg = new JLabel(image);
 		lblSatImg.setBackground(Color.WHITE);
-		lblSatImg.setBounds(378, 11, 150, 150);
+		lblSatImg.setBounds(396, 51, 150, 150);
 		lblSatImg.setVerticalAlignment(SwingConstants.TOP);
 		lblSatImg.setText("");
 		panel.add(lblSatImg);
 		
 		JLabel lblNewLabel_1 = new JLabel("Constillation");
-		lblNewLabel_1.setBounds(47, 63, 81, 14);
+		lblNewLabel_1.setBounds(21, 67, 114, 20);
 		panel.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Info");
-		lblNewLabel_2.setBounds(47, 88, 46, 14);
+		lblNewLabel_2.setBounds(21, 241, 67, 31);
 		panel.add(lblNewLabel_2);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(138, 60, 86, 20);
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		constillationField = new JTextField();
+		constillationField.setBounds(167, 61, 114, 32);
+		panel.add(constillationField);
+		constillationField.setColumns(10);
 		
-		JEditorPane editorPane = new JEditorPane();
-		editorPane.setBounds(138, 88, 172, 85);
-		panel.add(editorPane);
+		JEditorPane infoPane = new JEditorPane();
+		infoPane.setBounds(167, 256, 186, 113);
+		panel.add(infoPane);
+		
+		JButton saveButton = new JButton("Commit to Database");
+		saveButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				System.out.println("Saved!");
+			}
+		});
+		saveButton.setBounds(138, 390, 230, 35);
+		panel.add(saveButton);
+		
+		JLabel lbUplinkFreq = new JLabel("Uplink Freq");
+		lbUplinkFreq.setBounds(21, 108, 138, 26);
+		panel.add(lbUplinkFreq);
+		
+		JLabel lbDownlinkFreq = new JLabel("Downlink Freq");
+		lbDownlinkFreq.setBounds(21, 155, 138, 26);
+		panel.add(lbDownlinkFreq);
+		
+		JLabel lbSatelliteImage = new JLabel("Sat Image");
+		lbSatelliteImage.setBounds(21, 202, 138, 26);
+		panel.add(lbSatelliteImage);
+		
+		uplinkFreqField = new JTextField();
+		uplinkFreqField.setBounds(167, 108, 186, 32);
+		panel.add(uplinkFreqField);
+		uplinkFreqField.setColumns(10);
+		
+		downlinkFreqField = new JTextField();
+		downlinkFreqField.setBounds(167, 152, 186, 32);
+		panel.add(downlinkFreqField);
+		downlinkFreqField.setColumns(10);
+		
+		JList list = new JList();
+		list.setModel(new AbstractListModel() {
+			String[] values = new String[] {"Satellite", "Station", "Geostationary", "Weather", "Amateur Radio"};
+			public int getSize() {
+				return values.length;
+			}
+			public Object getElementAt(int index) {
+				return values[index];
+			}
+		});
+		list.setSelectedIndex(2);
+		list.setBounds(167, 201, 186, 31);
+		panel.add(list);
 		
 		//Where the tree is initialized:
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -133,6 +188,10 @@ public class satelliteTree extends JInternalFrame {
 		    /* React to the node selection. */
 			    if (node.isLeaf()) {
 			        SatelliteTrack sat = SatelliteDB.sat(SatelliteDB.getSatIndex((String) nodeInfo));
+			        constillationField.setText(sat.getConstillation());
+			        satNameField.setText(sat.getTLE().getName());
+			        uplinkFreqField.setText(Long.toString(sat.getUplinkFreq()));
+			        downlinkFreqField.setText(Long.toString(sat.getDownlinkFreq()));
 			        System.out.println(sat.getTLE().getName());
 			    } else {
 			    	System.out.println("Not Leaf");
