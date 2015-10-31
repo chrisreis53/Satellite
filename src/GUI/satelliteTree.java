@@ -44,6 +44,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.JMenuItem;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.ListSelectionModel;
 
 public class satelliteTree extends JInternalFrame {
 	private JTextField satNameField;
@@ -86,7 +87,7 @@ public class satelliteTree extends JInternalFrame {
 		panel.add(lblNewLabel);
 		
 		satNameField = new JTextField();
-		satNameField.setBounds(167, 21, 114, 32);
+		satNameField.setBounds(167, 21, 186, 32);
 		satNameField.setDropMode(DropMode.INSERT);
 		panel.add(satNameField);
 		satNameField.setColumns(10);
@@ -116,12 +117,12 @@ public class satelliteTree extends JInternalFrame {
 		panel.add(lblNewLabel_2);
 		
 		constillationField = new JTextField();
-		constillationField.setBounds(167, 61, 114, 32);
+		constillationField.setBounds(167, 61, 186, 32);
 		panel.add(constillationField);
 		constillationField.setColumns(10);
 		
 		JEditorPane infoPane = new JEditorPane();
-		infoPane.setBounds(167, 256, 186, 113);
+		infoPane.setBounds(167, 256, 379, 113);
 		panel.add(infoPane);
 		
 		JButton saveButton = new JButton("Commit to Database");
@@ -157,6 +158,7 @@ public class satelliteTree extends JInternalFrame {
 		downlinkFreqField.setColumns(10);
 		
 		JList list = new JList();
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setModel(new AbstractListModel() {
 			String[] values = new String[] {"Satellite", "Station", "Geostationary", "Weather", "Amateur Radio"};
 			public int getSize() {
