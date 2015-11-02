@@ -82,6 +82,12 @@ public class Application {
 		satTree.setBounds(10, 52, 867, 495);
 		desktopPane.add(satTree);
 		
+		satelliteStatus satStatus = new satelliteStatus();
+		satStatus.setClosable(true);
+		satStatus.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		satStatus.setResizable(true);
+		desktopPane.add(satStatus);
+		
 		JMenuBar menuBar = new JMenuBar();
 		frmSatelliteTracker.setJMenuBar(menuBar);
 		
@@ -160,6 +166,13 @@ public class Application {
 		mnWindows.add(mntmFuturePasses);
 		
 		JMenuItem mntmSatelliteInfo = new JMenuItem("Satellite Info");
+		mntmSatelliteInfo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				satStatus.setVisible(true);
+				satStatus.updateTree(satellites);
+			}
+		});
 		mnWindows.add(mntmSatelliteInfo);
 		
 		JMenuItem mntmSatelliteTree = new JMenuItem("Satellite Tree");

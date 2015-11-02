@@ -1,32 +1,118 @@
 package GUI;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import satellite.SatelliteDB;
+import satellite.SatelliteTrack;
+import satellite.trackerThread;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
+import javax.swing.JPanel;
+import javax.swing.JButton;
 
 public class satelliteStatus extends JInternalFrame {
 
+	SatelliteTrack curSat = null;
+	DefaultMutableTreeNode root = new DefaultMutableTreeNode("Database");
+	JTree tree = new JTree(root);
+	
 	/**
 	 * Create the frame.
 	 */
 	public satelliteStatus() {
-		setBounds(100, 100, 451, 576);
-		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
+		setBounds(100, 100, 740, 530);
+		
+		JDesktopPane desktopPane = new JDesktopPane();
+		getContentPane().add(desktopPane, BorderLayout.CENTER);
+		
+		JScrollPane treescroll = new JScrollPane(tree);
+		treescroll.setBounds(0, 0, 254, 481);
+		desktopPane.add(treescroll);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(254, 0, 470, 481);
+		desktopPane.add(panel);
+		
+		JButton btnStartTracking = new JButton("Start Tracking");
+		btnStartTracking.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				trackerThread.setSatellite(curSat);
+				(new Thread(new trackerThread())).start();
+			}
+		});
+		panel.add(btnStartTracking);
+		
+		//Where the tree is initialized:
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
+		//Listen for when the selection changes.
+		tree.addTreeSelectionListener(new TreeSelectionListener() {
+		    public void valueChanged(TreeSelectionEvent e) {
+		        DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+		                           tree.getLastSelectedPathComponent();
+
+		    /* if nothing is selected */ 
+		        if (node == null) return;
+
+		    /* retrieve the node that was selected */ 
+		        Object nodeInfo = node.getUserObject();
+		 
+		    /* React to the node selection. */
+			    if (node.isLeaf()) {
+			        curSat = SatelliteDB.sat(SatelliteDB.getSatIndex((String) nodeInfo));
+			        trackerThread.setSatellite(curSat);
+			        System.out.println(curSat.getTLE().getName());
+			    } else {
+			    	System.out.println("Not Leaf");
+			    }
+		    }
+		});
+
+	}
+	
+	public void updateTree(SatelliteDB satellites){
+		
+		//Iterate through sat database
+		for(int i = 0;i<satellites.getSize();i++){
+			boolean b_set = false;
+			//pull constellation from satellite
+			String constillation = satellites.sat(i).getConstillation();
+			//pull nodes from Jtree
+			int count = root.getChildCount();
+			System.out.println(count);
+			for(int j = 0; j<count;j++){
+				System.out.println(root.getChildCount());
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(j);
+				if(node.toString().equalsIgnoreCase(constillation.trim())){
+					node.add(new DefaultMutableTreeNode(satellites.sat(i).getTLE().getName()));
+					System.out.println("added to existing");
+					b_set = true;
+				} 
+			}
+			if(!b_set) { 
+				DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(constillation);
+				newNode.add(new DefaultMutableTreeNode(satellites.sat(i).getTLE().getName()));
+				root.add(newNode);
+			}
+			
+		}
 	}
 
 }
