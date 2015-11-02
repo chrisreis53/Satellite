@@ -108,7 +108,7 @@ public class Application {
 		});
 		mnFile.add(mntmSaveTleXml);
 		
-		JMenuItem mntmCustomeSatelliteTrack = new JMenuItem("Custome Satellite Track");
+		JMenuItem mntmCustomeSatelliteTrack = new JMenuItem("Custom Satellite Track");
 		mnFile.add(mntmCustomeSatelliteTrack);
 		
 		JMenuItem mntmSettings = new JMenuItem("Settings");
@@ -136,6 +136,12 @@ public class Application {
 		menuBar.add(mnView);
 		
 		JMenuItem mntmSelectSatellite = new JMenuItem("Select Satellite");
+		mntmSelectSatellite.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				(new Thread(new trackerThread())).start();
+			}
+		});
 		mnView.add(mntmSelectSatellite);
 		
 		JMenu mnWindows = new JMenu("Windows");
