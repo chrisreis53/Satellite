@@ -25,6 +25,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import java.awt.GridLayout;
 
 public class satelliteStatus extends JInternalFrame {
 
@@ -50,6 +51,7 @@ public class satelliteStatus extends JInternalFrame {
 		desktopPane.add(panel);
 		
 		JButton btnStartTracking = new JButton("Start Tracking");
+		btnStartTracking.setBounds(35, 390, 165, 48);
 		btnStartTracking.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
@@ -57,7 +59,36 @@ public class satelliteStatus extends JInternalFrame {
 				(new Thread(new trackerThread())).start();
 			}
 		});
+		panel.setLayout(null);
 		panel.add(btnStartTracking);
+		
+		JButton btnStopTracking = new JButton("Stop Tracking");
+		btnStopTracking.setBounds(257, 390, 161, 48);
+		panel.add(btnStopTracking);
+		
+		JLabel lblLatitude = new JLabel("Latitude");
+		lblLatitude.setBounds(35, 21, 165, 31);
+		panel.add(lblLatitude);
+		
+		JLabel lblLongitude = new JLabel("Longitude");
+		lblLongitude.setBounds(35, 73, 92, 26);
+		panel.add(lblLongitude);
+		
+		JLabel lblAltitude = new JLabel("Altitude");
+		lblAltitude.setBounds(35, 120, 92, 26);
+		panel.add(lblAltitude);
+		
+		JLabel lblRange = new JLabel("Range");
+		lblRange.setBounds(35, 172, 92, 26);
+		panel.add(lblRange);
+		
+		JLabel lblLat = new JLabel("Lat");
+		lblLat.setBounds(164, 23, 92, 26);
+		panel.add(lblLat);
+		
+		JLabel lblLong = new JLabel("Long");
+		lblLong.setBounds(164, 73, 92, 26);
+		panel.add(lblLong);
 		
 		//Where the tree is initialized:
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -114,5 +145,4 @@ public class satelliteStatus extends JInternalFrame {
 			
 		}
 	}
-
 }
