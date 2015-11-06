@@ -39,11 +39,14 @@ public class SatelliteDB {
 	static boolean databaseSet = false;
 	static String name = "SatelliteDB";
 	static GroundStationPosition groundstation;
+	static ArrayList<GroundStationPosition> GROUNDSTATIONS = new ArrayList<GroundStationPosition>();
 	final static GroundStationPosition ALBUQUERQUE = new GroundStationPosition(35.0873191, -106.6376107, 5500, "Albuquerque");
 	final static GroundStationPosition STORMLAKE = new GroundStationPosition(42.6436, 95.2019, 1440,"Storm Lake"); 
 	
 	public SatelliteDB(String name){
 		this.name = name;
+		GROUNDSTATIONS.add(ALBUQUERQUE);
+		GROUNDSTATIONS.add(STORMLAKE);
 	}
 	
 	public static boolean downloadTLE(String in_url, String file){

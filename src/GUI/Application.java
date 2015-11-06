@@ -145,7 +145,7 @@ public class Application {
 		mntmSelectSatellite.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				(new Thread(new trackerThread())).start();
+				//(new Thread(new trackerThread())).start();
 			}
 		});
 		mnView.add(mntmSelectSatellite);
