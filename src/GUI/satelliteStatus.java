@@ -27,7 +27,6 @@ import java.awt.GridLayout;
 
 public class satelliteStatus extends JInternalFrame {
 
-	TrackerThread tracker = new TrackerThread();
 	SatelliteTrack curSat = null;
 	DefaultMutableTreeNode root = new DefaultMutableTreeNode("Database");
 	JTree tree = new JTree(root);
@@ -54,7 +53,7 @@ public class satelliteStatus extends JInternalFrame {
 		btnStartTracking.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				tracker.startTrack(curSat.getTLE().getName(), "Albuquerque");
+				TrackerThread.startTrack(curSat.getTLE().getName(), "Albuquerque");
 				//thread.setSatellite(curSat);
 				//(new Thread(new thread())).start();
 			}
@@ -64,6 +63,14 @@ public class satelliteStatus extends JInternalFrame {
 		
 		JButton btnStopTracking = new JButton("Stop Tracking");
 		btnStopTracking.setBounds(257, 390, 161, 48);
+		btnStopTracking.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				tracker.stopTrack(curSat.getTLE().getName());
+				//thread.setSatellite(curSat);
+				//(new Thread(new thread())).start();
+			}
+		});
 		panel.add(btnStopTracking);
 		
 		JLabel lblLatitude = new JLabel("Latitude");

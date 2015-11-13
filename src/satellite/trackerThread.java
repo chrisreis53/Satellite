@@ -7,18 +7,22 @@ public class TrackerThread{
 
 	//trackerThread.setSatellite(curSat);
 	//(new Thread(new trackerThread())).start();
-	private static List<thread> threadList = new ArrayList<thread>();
+	private static List<tracker> threadList = new ArrayList<tracker>();
 	
 	
-	public void startTrack(String sat, String gs){
+	public static void startTrack(String sat, String gs){
 		int satNum = SatelliteDB.getSatIndex(sat);
 		SatelliteTrack satellite = SatelliteDB.sat(satNum);
-		threadList.add(new thread(satellite));
-		threadList.get(threadList.size()-1).run();
+		threadList.add(new tracker(satellite));
+		threadList.get(threadList.size()-1).start();
 	}
 	
 	public void stopTrack(String sat){
-		
+		for(int i = 0;i<threadList.size();i++){
+			if(threadList.get(i).name.equals(sat)){
+				threadList.get(i).stop();
+			}
+		}
 	}
 	
 	private void searchThread(String sat){
@@ -28,13 +32,14 @@ public class TrackerThread{
 			}
 		}
 	}
-	private class thread implements Runnable{
+	
+	private class tracker extends Thread{
 		
-		public thread(SatelliteTrack satellite){
+		public tracker(SatelliteTrack satellite){
 			sat = satellite;
 			name = satellite.getTLE().getName();
 		}
-		String name;
+		public String name;
 		SatelliteTrack sat;
 		int seconds = 0;
 		public void run(){
