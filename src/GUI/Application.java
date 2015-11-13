@@ -38,6 +38,7 @@ public class Application {
 
 	private JFrame frmSatelliteTracker;
 	private final Action action = new SwingAction();
+	TrackerThread tracker = new TrackerThread();
 	SatelliteDB satellites = new SatelliteDB("SatelliteDB");
 
 	/**
