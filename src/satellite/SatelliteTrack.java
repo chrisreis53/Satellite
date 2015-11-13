@@ -160,6 +160,15 @@ public class SatelliteTrack {
 		tripleOrbit = getTripleOrbit(this.satellite);
 	}
 
+	public satPosition getPosition(){
+		satellite.calculateSatelliteVectors(new Date());
+		satPosition pos = new satPosition(satellite.calculateSatelliteGroundTrack().getLatitude(),
+				satellite.calculateSatelliteGroundTrack().getLongitude(),
+				satellite.calculateSatelliteGroundTrack().getAltitude(),
+				satellite.calculateSatelliteGroundTrack().getTime());
+		return pos;
+	}
+	
 	public List<SatPassTime> get24hrPasses(GroundStationPosition gpos) {
 
 		updateSatPassPredictor(gpos);

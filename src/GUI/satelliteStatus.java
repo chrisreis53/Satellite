@@ -53,7 +53,7 @@ public class satelliteStatus extends JInternalFrame {
 		btnStartTracking.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				TrackerThread.startTrack(curSat.getTLE().getName(), "Albuquerque");
+				TrackerList.startTrack(curSat.getTLE().getName(), "Albuquerque");
 				//thread.setSatellite(curSat);
 				//(new Thread(new thread())).start();
 			}
@@ -66,7 +66,7 @@ public class satelliteStatus extends JInternalFrame {
 		btnStopTracking.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				tracker.stopTrack(curSat.getTLE().getName());
+				TrackerList.stopTrack(curSat.getTLE().getName());
 				//thread.setSatellite(curSat);
 				//(new Thread(new thread())).start();
 			}
