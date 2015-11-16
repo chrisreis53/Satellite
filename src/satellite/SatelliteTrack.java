@@ -165,7 +165,8 @@ public class SatelliteTrack {
 		satPosition pos = new satPosition(satellite.calculateSatelliteGroundTrack().getLatitude(),
 				satellite.calculateSatelliteGroundTrack().getLongitude(),
 				satellite.calculateSatelliteGroundTrack().getAltitude(),
-				satellite.calculateSatelliteGroundTrack().getTime());
+				satellite.calculateSatelliteGroundTrack().getTime(),
+				satellite.getTLE().getName());
 		return pos;
 	}
 	

@@ -47,18 +47,10 @@ public class Application {
 	static TrackerList trackList = new TrackerList();
 	static SatelliteDB satellites = new SatelliteDB("SatelliteDB");
 	static view3D threeDview = new view3D();
-
-	static ActionListener updateTracks = new ActionListener() {
-	    public void actionPerformed(ActionEvent evt) {
-	    	List<satPosition> pos = TrackerList.getTracks();
-	    	threeDview.updateTracks(pos);
-	    }
-	};
 	
 	static ActionListener addtrack = new ActionListener() {
 	    public void actionPerformed(ActionEvent evt) {
 	    	threeDview.addSatellite(TrackerList.getTracks());
-	    	//System.out.println(TrackerList.getTracks().get(0).getLat());
 	    }
 	};
 	

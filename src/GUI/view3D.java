@@ -87,34 +87,24 @@ public class view3D extends JInternalFrame{
         
         Iterable<Renderable> iter = layer.getRenderables();
         while(iter.iterator().hasNext()){
+        	System.out.println("Iterator ");
         	Renderable rend = iter.iterator().next();
         	if(rend instanceof PointPlacemark){
         		PointPlacemark delp = (PointPlacemark)rend;
+        		System.out.println(delp.getLabelText());
         		if(delp.getLabelText().equals(name)){
         			delp.setPosition(Position.fromDegrees(lat, lon, alt* 1000));
         			System.out.println(lat + " " + lon + " " + alt*1000);
         			wwd.redraw();
         			return;
+        		}else{
+        			return;
         		}
+        	} else {
+        		System.out.println("Not a PP");
         	}
         }
-          PointPlacemark pp = new PointPlacemark(Position.fromDegrees(lat, lon, alt *1000 ));
-//        pp.setValue(AVKey.DISPLAY_NAME, "Clamp to ground, Audio icon, Heading -45, Globe relative");
-//        pp.setLabelText(name);
-//        pp.setLineEnabled(false);
-//        pp.setAltitudeMode(WorldWind.RELATIVE_TO_GROUND);
-//        PointPlacemarkAttributes attrs = new PointPlacemarkAttributes();
-//        attrs.setImageAddress("D:\\MyDocuments\\GitHub\\Satellite\\satellite.png");
-//        attrs.setHeading(-45d);
-//        attrs.setHeadingReference(AVKey.RELATIVE_TO_GLOBE);
-//        attrs.setScale(0.05);
-//        attrs.setImageOffset(new Offset(0.5, 0.5, AVKey.FRACTION, AVKey.FRACTION));
-//        attrs.setImageOffset(new Offset(19d, 8d, AVKey.PIXELS, AVKey.PIXELS));
-//        attrs.setLabelColor("ffffffff");
-//        attrs.setLabelOffset(new Offset(0.9d, 0.6d, AVKey.FRACTION, AVKey.FRACTION));
-//        pp.setAttributes(attrs);
-//        layer.addRenderable(pp);
-        
+        PointPlacemark pp = new PointPlacemark(Position.fromDegrees(lat, lon, alt *1000 ));
         pp.setLabelText(name);
         pp.setValue(AVKey.DISPLAY_NAME, "Label, Semi-transparent, Audio icon");
         pp.setLineEnabled(false);
@@ -126,7 +116,7 @@ public class view3D extends JInternalFrame{
         attrsP.setImageOffset(new Offset(175d,175d,AVKey.PIXELS, AVKey.PIXELS));
         pp.setAttributes(attrsP);
         layer.addRenderable(pp);
-        
+      
         // Add the layer to the model.
         wwd.getModel().getLayers().add(layer);
         // Update layer panel
@@ -134,8 +124,10 @@ public class view3D extends JInternalFrame{
     }
 
     public void addSatellite(List<satPosition> positions){
+    	System.out.println("Size " + positions.size());
     	for(int i = 0; i<positions.size();i++){
     		addTrack(positions.get(i).getName(),positions.get(i).getLat(),positions.get(i).getLon(),positions.get(i).getAlt());
+    		System.out.println(positions.get(i).getName()+ " Added!");
     	}
     }
 }

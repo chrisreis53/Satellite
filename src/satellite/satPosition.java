@@ -28,6 +28,15 @@ public class satPosition{
 		this.time = new Date();
 	}
 	
+	public satPosition(double lat, double lon, double alt, Date time, String name) {
+		super();
+		this.lat = lat;
+		this.lon = lon;
+		this.alt = alt;
+		this.name = name;
+		this.time = time;
+	}
+	
 	public String getName(){
 		return name;
 	}
