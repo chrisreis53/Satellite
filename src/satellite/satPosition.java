@@ -8,13 +8,28 @@ public class satPosition{
 	private final double lon;
 	private final double alt;
 	private final Date time;
+	private final String name;
 
 	public satPosition(double lat, double lon, double alt, Date time) {
 		super();
 		this.lat = lat;
 		this.lon = lon;
 		this.alt = alt;
+		this.name = "blank";
 		this.time = time;
+	}
+	
+	public satPosition(double lat, double lon, double alt, String name) {
+		super();
+		this.lat = lat;
+		this.lon = lon;
+		this.alt = alt;
+		this.name = name;
+		this.time = new Date();
+	}
+	
+	public String getName(){
+		return name;
 	}
 
 	public double getLat() {

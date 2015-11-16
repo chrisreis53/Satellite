@@ -13,6 +13,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.Action;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
@@ -28,6 +30,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.swing.JDesktopPane;
 import javax.swing.JToolBar;
 import javax.swing.JProgressBar;
@@ -37,19 +44,37 @@ import javax.swing.JTextField;
 public class Application {
 
 	private JFrame frmSatelliteTracker;
-	private final Action action = new SwingAction();
-	TrackerList trackList = new TrackerList();
-	SatelliteDB satellites = new SatelliteDB("SatelliteDB");
+	static TrackerList trackList = new TrackerList();
+	static SatelliteDB satellites = new SatelliteDB("SatelliteDB");
+	static view3D threeDview = new view3D();
 
+	static ActionListener updateTracks = new ActionListener() {
+	    public void actionPerformed(ActionEvent evt) {
+	    	List<satPosition> pos = TrackerList.getTracks();
+	    	threeDview.updateTracks(pos);
+	    	System.out.println("update");
+	    }
+	};
+	
+	static ActionListener addtrack = new ActionListener() {
+	    public void actionPerformed(ActionEvent evt) {
+	    	threeDview.addSatellite(TrackerList.getTracks());
+	    }
+	};
+	
 	/**
 	 * Launch the application.
+	 * @throws InterruptedException 
+	 * @throws InvocationTargetException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InvocationTargetException, InterruptedException {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Application window = new Application();
 					window.frmSatelliteTracker.setVisible(true);
+					new javax.swing.Timer(500, updateTracks).start();
+					new javax.swing.Timer(500, addtrack).start();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -62,6 +87,18 @@ public class Application {
 	 */
 	public Application() {
 		initialize();
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					while(true){
+//						System.out.println(new Date());
+//						Thread.sleep(500);
+//					}
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
 	}
 
 	/**
@@ -80,14 +117,25 @@ public class Application {
 		satTree.setClosable(true);
 		satTree.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		satTree.setResizable(true);
-		satTree.setBounds(10, 52, 867, 495);
+		satTree.setVisible(false);
+		satTree.setBounds(448, 177, 867, 495);
 		desktopPane.add(satTree);
 		
 		satelliteStatus satStatus = new satelliteStatus();
+		satStatus.setLocation(32, 86);
 		satStatus.setClosable(true);
 		satStatus.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		satStatus.setResizable(true);
+		satStatus.setVisible(false);
 		desktopPane.add(satStatus);
+		
+		threeDview = new view3D();
+		threeDview.setClosable(true);
+		threeDview.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		threeDview.setResizable(true);
+		threeDview.setVisible(true);
+		threeDview.setBounds(300, 20, 500, 500);
+		desktopPane.add(threeDview);
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmSatelliteTracker.setJMenuBar(menuBar);
@@ -208,14 +256,5 @@ public class Application {
 		
 
 	}
-	
 
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "SwingAction");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-		}
-	}
 }

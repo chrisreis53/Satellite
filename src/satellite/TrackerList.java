@@ -27,6 +27,14 @@ public class TrackerList {
 		return threadList.get(satNum).sat.getPosition();
 	}
 	
+	public static List<satPosition> getTracks(){
+		List<satPosition> positions = new ArrayList<satPosition>();
+		for(int i =0;i<threadList.size();i++){
+			positions.add(threadList.get(i).getPos());
+		}
+		return positions;
+	}
+	
 	private static int searchThread(String sat){
 		for(int i = 0;i<threadList.size();i++){
 			if(sat.trim().equals(threadList.get(i).name)){
