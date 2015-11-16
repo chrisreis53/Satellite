@@ -94,7 +94,7 @@ public class satelliteTree extends JInternalFrame {
 		
 		BufferedImage img = null;
 		try {
-		    img = ImageIO.read(new File("//C:\\Users\\Christopher\\Documents\\GitHub\\Satellite\\satellite.png"));
+		    img = ImageIO.read(new File("D:\\MyDocuments\\GitHub\\Satellite\\satellite.png"));
 		    //D:\\MyDocuments\\GitHub\\Satellite\\satellite.png
 		    //C:\\Users\\Christopher\\Documents\\GitHub\\Satellite\\satellite.png
 		} catch (IOException e) {

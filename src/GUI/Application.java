@@ -52,7 +52,6 @@ public class Application {
 	    public void actionPerformed(ActionEvent evt) {
 	    	List<satPosition> pos = TrackerList.getTracks();
 	    	threeDview.updateTracks(pos);
-	    	System.out.println("update");
 	    }
 	};
 	
@@ -73,8 +72,8 @@ public class Application {
 				try {
 					Application window = new Application();
 					window.frmSatelliteTracker.setVisible(true);
-					new javax.swing.Timer(500, updateTracks).start();
-					new javax.swing.Timer(500, addtrack).start();
+					//new javax.swing.Timer(500, updateTracks).start();
+					new javax.swing.Timer(10 00, addtrack).start();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

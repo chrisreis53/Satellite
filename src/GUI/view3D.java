@@ -24,6 +24,7 @@ public class view3D extends JInternalFrame{
 	
 	private List<satPosition> trackList = new ArrayList<satPosition>();
 	WorldWindowGLCanvas wwd;
+	RenderableLayer layer = new RenderableLayer();
 	
     public view3D()
     {
@@ -82,13 +83,16 @@ public class view3D extends JInternalFrame{
     }
     
     public void addTrack(String name, Double lat, Double lon){
-        RenderableLayer layer = new RenderableLayer();
+    	
+        
         Iterable<Renderable> iter = layer.getRenderables();
-        for(Renderable rend : iter){
+        while(iter.iterator().hasNext()){
+        	Renderable rend = iter.iterator().next();
         	if(rend instanceof PointPlacemark){
         		PointPlacemark delp = (PointPlacemark)rend;
         		if(delp.getLabelText().equals(name)){
         			delp.setPosition(Position.fromDegrees(lat, lon));
+        			wwd.redraw();
         			return;
         		}
         	}
@@ -99,10 +103,10 @@ public class view3D extends JInternalFrame{
         pp.setLineEnabled(false);
         pp.setAltitudeMode(WorldWind.CLAMP_TO_GROUND);
         PointPlacemarkAttributes attrs = new PointPlacemarkAttributes();
-        attrs.setImageAddress("gov/nasa/worldwindx/examples/images/audioicon-64.png");
+        attrs.setImageAddress("D:\\MyDocuments\\GitHub\\Satellite\\satellite.png");
         attrs.setHeading(-45d);
         attrs.setHeadingReference(AVKey.RELATIVE_TO_GLOBE);
-        attrs.setScale(0.6);
+        attrs.setScale(0.05);
 //        attrs.setImageOffset(new Offset(0.5, 0.5, AVKey.FRACTION, AVKey.FRACTION));
         attrs.setImageOffset(new Offset(19d, 8d, AVKey.PIXELS, AVKey.PIXELS));
         attrs.setLabelColor("ffffffff");
