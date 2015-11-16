@@ -58,6 +58,7 @@ public class Application {
 	static ActionListener addtrack = new ActionListener() {
 	    public void actionPerformed(ActionEvent evt) {
 	    	threeDview.addSatellite(TrackerList.getTracks());
+	    	//System.out.println(TrackerList.getTracks().get(0).getLat());
 	    }
 	};
 	
@@ -73,7 +74,7 @@ public class Application {
 					Application window = new Application();
 					window.frmSatelliteTracker.setVisible(true);
 					//new javax.swing.Timer(500, updateTracks).start();
-					new javax.swing.Timer(10 00, addtrack).start();
+					new javax.swing.Timer(1000, addtrack).start();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

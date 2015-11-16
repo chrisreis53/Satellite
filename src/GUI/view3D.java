@@ -82,7 +82,7 @@ public class view3D extends JInternalFrame{
     	}
     }
     
-    public void addTrack(String name, Double lat, Double lon){
+    public void addTrack(String name, Double lat, Double lon, Double alt){
     	
         
         Iterable<Renderable> iter = layer.getRenderables();
@@ -91,27 +91,40 @@ public class view3D extends JInternalFrame{
         	if(rend instanceof PointPlacemark){
         		PointPlacemark delp = (PointPlacemark)rend;
         		if(delp.getLabelText().equals(name)){
-        			delp.setPosition(Position.fromDegrees(lat, lon));
+        			delp.setPosition(Position.fromDegrees(lat, lon, alt* 1000));
+        			System.out.println(lat + " " + lon + " " + alt*1000);
         			wwd.redraw();
         			return;
         		}
         	}
         }
-        PointPlacemark pp = new PointPlacemark(Position.fromDegrees(lat, lon, 1e4));
-        pp.setValue(AVKey.DISPLAY_NAME, "Clamp to ground, Audio icon, Heading -45, Globe relative");
-        pp.setLabelText(name);
-        pp.setLineEnabled(false);
-        pp.setAltitudeMode(WorldWind.CLAMP_TO_GROUND);
-        PointPlacemarkAttributes attrs = new PointPlacemarkAttributes();
-        attrs.setImageAddress("D:\\MyDocuments\\GitHub\\Satellite\\satellite.png");
-        attrs.setHeading(-45d);
-        attrs.setHeadingReference(AVKey.RELATIVE_TO_GLOBE);
-        attrs.setScale(0.05);
+          PointPlacemark pp = new PointPlacemark(Position.fromDegrees(lat, lon, alt *1000 ));
+//        pp.setValue(AVKey.DISPLAY_NAME, "Clamp to ground, Audio icon, Heading -45, Globe relative");
+//        pp.setLabelText(name);
+//        pp.setLineEnabled(false);
+//        pp.setAltitudeMode(WorldWind.RELATIVE_TO_GROUND);
+//        PointPlacemarkAttributes attrs = new PointPlacemarkAttributes();
+//        attrs.setImageAddress("D:\\MyDocuments\\GitHub\\Satellite\\satellite.png");
+//        attrs.setHeading(-45d);
+//        attrs.setHeadingReference(AVKey.RELATIVE_TO_GLOBE);
+//        attrs.setScale(0.05);
 //        attrs.setImageOffset(new Offset(0.5, 0.5, AVKey.FRACTION, AVKey.FRACTION));
-        attrs.setImageOffset(new Offset(19d, 8d, AVKey.PIXELS, AVKey.PIXELS));
-        attrs.setLabelColor("ffffffff");
-        attrs.setLabelOffset(new Offset(0.9d, 0.6d, AVKey.FRACTION, AVKey.FRACTION));
-        pp.setAttributes(attrs);
+//        attrs.setImageOffset(new Offset(19d, 8d, AVKey.PIXELS, AVKey.PIXELS));
+//        attrs.setLabelColor("ffffffff");
+//        attrs.setLabelOffset(new Offset(0.9d, 0.6d, AVKey.FRACTION, AVKey.FRACTION));
+//        pp.setAttributes(attrs);
+//        layer.addRenderable(pp);
+        
+        pp.setLabelText(name);
+        pp.setValue(AVKey.DISPLAY_NAME, "Label, Semi-transparent, Audio icon");
+        pp.setLineEnabled(false);
+        pp.setAltitudeMode(WorldWind.RELATIVE_TO_GROUND);
+        PointPlacemarkAttributes attrsP = new PointPlacemarkAttributes();
+        attrsP.setImageAddress("satellite.png");
+        //attrsP.setImageColor(new Color(1f, 1f, 1f, 0.6f));
+        attrsP.setScale(0.1);
+        attrsP.setImageOffset(new Offset(175d,175d,AVKey.PIXELS, AVKey.PIXELS));
+        pp.setAttributes(attrsP);
         layer.addRenderable(pp);
         
         // Add the layer to the model.
@@ -122,7 +135,7 @@ public class view3D extends JInternalFrame{
 
     public void addSatellite(List<satPosition> positions){
     	for(int i = 0; i<positions.size();i++){
-    		addTrack(positions.get(i).getName(),positions.get(i).getLat(),positions.get(i).getLon());
+    		addTrack(positions.get(i).getName(),positions.get(i).getLat(),positions.get(i).getLon(),positions.get(i).getAlt());
     	}
     }
 }
